@@ -1,0 +1,30 @@
+# Noir Theme for Swaylock
+image=~/.config/sway/assets/3.jpg
+scaling=fill
+
+inside-color=000000B3
+line-color=00000000
+ring-color=ffffff
+text-color=ffffff
+
+layout-bg-color=00000000
+layout-text-color=ffffff
+
+inside-clear-color=4d4d4d
+line-clear-color=00000000
+ring-clear-color=ffffff
+text-clear-color=ffffff
+
+inside-ver-color=333333
+line-ver-color=00000000
+ring-ver-color=888888
+text-ver-color=ffffff
+
+inside-wrong-color=440000
+line-wrong-color=00000000
+ring-wrong-color=ff0000
+text-wrong-color=ffffff
+
+# Highlights
+bs-hl-color=ff0000
+key-hl-color=888888

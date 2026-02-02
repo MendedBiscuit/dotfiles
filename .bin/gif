@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# Timestamp-based filename
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+VIDEO_FILE="/tmp/recording_${TIMESTAMP}.mp4"
+GIF_FILE="/tmp/recording_${TIMESTAMP}.gif"
+
+# Check dependencies
+for cmd in wf-recorder slurp ffmpeg; do
+  if ! command -v "$cmd" &>/dev/null; then
+    echo "Error: $cmd is not installed."
+    exit 1
+  fi
+done
+
+# Select area using slurp
+echo "Select an area to record..."
+GEOM=$(slurp)
+
+if [ -z "$GEOM" ]; then
+  echo "No area selected. Exiting."
+  exit 1
+fi
+
+# Record until user interrupts with Ctrl+C
+echo "Recording... press Ctrl+C to stop."
+wf-recorder -g "$GEOM" -f "$VIDEO_FILE"
+
+# Convert to GIF using ffmpeg
+if [ -f "$VIDEO_FILE" ]; then
+  echo "Converting to GIF..."
+  ffmpeg -y -i "$VIDEO_FILE" -vf "fps=15,scale=640:-1:flags=lanczos" "$GIF_FILE"
+  echo "GIF saved to $GIF_FILE"
+else
+  echo "Recording file not found."
+fi

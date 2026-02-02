@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Prompt user for search query
+read -rp "Enter YouTube search query: " query
+
+# Fetch search results (top 20) as "title<TAB>id<TAB>duration_string"
+mapfile -t results < <(
+  yt-dlp "ytsearch20:${query}" \
+    --flat-playlist \
+    --print "%(title)s$(printf '\t')%(id)s$(printf '\t')%(duration_string)s"
+)
+
+# Check if results are empty
+if [ "${#results[@]}" -eq 0 ]; then
+  echo "No results found."
+  exit 1
+fi
+
+# Display numbered list with titles and durations
+echo "Search results:"
+for i in "${!results[@]}"; do
+  title=$(echo "${results[$i]}" | cut -f1)
+  duration=$(echo "${results[$i]}" | cut -f3)
+  echo "$((i + 1)). $title [$duration]"
+done
+
+# Prompt for selection
+while true; do
+  read -rp "Enter the number of the video to play: " selection
+  if [[ "$selection" =~ ^[0-9]+$ ]] && ((selection >= 1 && selection <= ${#results[@]})); then
+    break
+  else
+    echo "Invalid selection. Please enter a number between 1 and ${#results[@]}."
+  fi
+done
+
+# Extract video ID and build full URL
+video_id=$(echo "${results[$((selection - 1))]}" | cut -f2)
+url="https://www.youtube.com/watch?v=${video_id}"
+
+# Play with mpv (audio only)
+mpv --no-video "$url"

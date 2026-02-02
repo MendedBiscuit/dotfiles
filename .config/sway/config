@@ -1,0 +1,184 @@
+# sway config file
+
+# set leader key (Mod4 logo key, Mod1 for Alt)
+set $mod Mod4
+
+# set preferred terminal
+set $term alacritty
+
+# set application launcher
+set $menu wofi --show drun -i | xargs swaymsg exec --
+
+set $browser firefox
+set $files dolphin
+
+# set color scheme
+include ~/.config/sway/colorscheme
+
+# idle management
+exec swayidle -w \
+         timeout 600 'swaylock -f -c 000000' #\
+#         timeout 600 'swaymsg "output * dpms off"' \
+#              resume 'swaymsg "output * dpms on"' \
+#         before-sleep 'swaylock -f -c 000000'
+bindsym $mod+l exec "swaylock -f -c 000000; sleep 1; pkill -USR1 swayidle"
+
+# start a terminal
+bindsym $mod+Return exec $term
+
+# kill focused window
+bindsym $mod+q kill
+
+# start your launcher
+bindsym $mod+space exec $menu
+
+# open browser
+bindsym $mod+w exec $browser
+
+bindsym $mod+e exec $files
+
+# move (non-)floating windows with $mod+left/right mouse button
+floating_modifier $mod normal
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+
+# exit sway
+bindsym $mod+Shift+e exec swaynag \
+    -t warning \
+    -m 'What do you want to do?' \
+    -b 'Logout' 'swaymsg exit' \
+    -b 'Poweroff' 'systemctl poweroff' \
+    -b 'Reboot' 'systemctl reboot'
+
+# move focus around with arrow keys
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# change "split" mode
+bindsym $mod+z splitv
+bindsym $mod+x splith
+
+# switch current container between different layout styles
+bindsym $mod+g layout stacking
+bindsym $mod+h layout tabbed
+bindsym $mod+j layout toggle split
+
+# make the current focus fullscreen
+bindsym $mod+f fullscreen
+
+# toggle the current focus between tiling and floating mode
+bindsym $mod+Shift+s floating toggle
+
+# swap focus between tiling and floating area
+bindsym $mod+s focus mode_toggle
+
+# move focus to parent container
+bindsym $mod+a focus parent
+
+# Note: Sway has a "scratchpad", which is a bag of holding for windows. You
+# can send windows there and them back later.
+# move focused window to the scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# show next scratchpad or hide focussed scratchpad window
+bindsym $mod+minus scratchpad show
+
+# resize containers
+mode "resize" {
+    # shrink/grow height/width
+    bindsym Left resize shrink width 40px
+    bindsym Up resize grow height 20px
+    bindsym Down resize shrink height 40px
+    bindsym Right resize grow width 20px
+
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# take screenshot
+bindsym Print exec grim ~/pictures/screenshots/$(date +"%Y%m%d_%H%M%S.png")
+bindsym $mod+Print exec grim -g \"$(slurp)" ~/pictures/screenshots/$(date +"%Y%m%d_%H%M%S.png")
+bindsym $mod+Shift+Print exec grim -g \"$(slurp)" - | wl-copy
+
+# dismiss notifications
+bindsym $mod+n exec makoctl dismiss
+bindsym $mod+Shift+n exec makoctl dismiss -a
+
+# special key bindings
+bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+
+# appearance
+smart_borders on
+default_border pixel 1
+
+# autostart udiskie
+exec udiskie &
+
+# media player
+
+# bg daemon
+exec_always "killall swww-daemon; swww-daemon --format xrgb & sleep 0.7 && swww img ~/.config/sway/assets/3.jpg"
+
+bar {
+    position top
+    status_command ~/.bin/status_bar
+
+    pango_markup enabled
+    font pango: Inter, Font Awesome 6 Free 11
+
+    colors {
+        # Black with transparency (99 at the end)
+        background #000000B3
+        separator  #00000000
+        statusline #ffffff
+
+        # State             Border     BG          Text
+        focused_workspace   #ffffff    #000000BF   #ffffff
+        active_workspace    #000000BF  #000000BF   #ffffff
+        inactive_workspace  #000000BF  #000000BF   #808080
+        urgent_workspace    #000000BF  #000000BF   #000000
+    }
+
+    tray_output none
+}
+
+include /etc/sway/config.d/*
+include ~/.config/sway/config.d/*

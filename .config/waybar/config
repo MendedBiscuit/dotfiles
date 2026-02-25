@@ -1,0 +1,75 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "modules-left": ["sway/workspaces", "sway/mode"],
+    "modules-center": [],
+    "modules-right": [
+        "mpris",
+        "custom/network",
+        "pulseaudio",
+        "cpu",
+        "memory",
+        "battery",
+        "custom/clock"
+    ],
+
+    "sway/workspaces": {
+        "disable-scroll": false,
+        "all-outputs": true,
+        "format": "{name}"
+    },
+
+    "mpris": {
+        "format": "<span color='#ffffff'>{status_icon}</span> <span color='#808080'>{artist} - {title}</span>",
+        "format-paused": "<span color='#ffffff'>{status_icon}</span> <span color='#808080'>{artist} - {title}</span>",
+        "player-icons": {
+            "default": "󰐊",
+            "paused": "󰏤"
+        },
+        "status-icons": {
+            "paused": "󰏤",
+            "playing": "󰐊"
+        },
+        "max-length": 40,
+        "on-click-middle": "playerctl play-pause",
+        "on-click-right": "playerctl next"
+    },
+
+    "cpu": {
+        "interval": 2,
+        "format": "<span color='#ffffff'>  </span> <span color='#808080'>{usage}%</span> <span color='#333333'></span>"
+    },
+
+    "memory": {
+        "interval": 2,
+        "format": "<span color='#ffffff'> </span> <span color='#808080'>{used:0.1f}G</span> <span color='#333333'></span>"
+    },
+
+    "custom/network": {
+        "exec": "nmcli -t -f active,ssid dev wifi | grep '^yes' | cut -d: -f2",
+        "format": "<span color='#ffffff'>  </span> <span color='#808080'>{}</span> <span color='#333333'></span>",
+        "interval": 10
+    },
+
+    "pulseaudio": {
+        "format": "<span color='#ffffff'>{icon} </span> <span color='#808080'>{volume}%</span> <span color='#333333'></span>",
+        "format-muted": "<span color='#808080'>  MUTED</span> <span color='#333333'></span>",
+        "format-icons": { "default": [" "] }
+    },
+
+    "battery": {
+        "format": "<span color='#ffffff'>{icon} </span> <span color='#808080'>{capacity}%</span> <span color='#333333'></span>",
+        "format-charging": "<span color='#ffffff'>󱐋</span> <span> color='#808080'>{capacity}%</span> <span color='#333333'></span>",
+        "format-icons": [" ", " ", " ", " ", " "]
+    },
+
+    "custom/clock": {
+        "exec": "date +'%H:%M | %m-%d'",
+        "format": "<span color='#ffffff'><b>{}</b></span>",
+        "interval": 60
+    },
+
+    "on-scroll-up": "swaymsg workspace prev",
+    "on-scroll-down": "swaymsg workspace next"
+}

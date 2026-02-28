@@ -1,5 +1,5 @@
 # Noir Theme for Swaylock
-image=~/.config/sway/assets/3.jpg
+image=~/.config/sway/assets/3blur.jpg
 scaling=fill
 
 inside-color=000000B3

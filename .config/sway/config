@@ -17,11 +17,13 @@ include ~/.config/sway/colorscheme
 
 # idle management
 exec swayidle -w \
-         timeout 600 'swaylock -f -c 000000' #\
-#         timeout 600 'swaymsg "output * dpms off"' \
-#              resume 'swaymsg "output * dpms on"' \
-#         before-sleep 'swaylock -f -c 000000'
-bindsym $mod+l exec "swaylock -f -c 000000; sleep 1; pkill -USR1 swayidle"
+         timeout 600 'swaylock -f -c 000000' \
+         timeout 605 'swaymsg "output * dpms off"' \
+         timeout 610 'systemctl suspend' \
+         resume 'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock -f -c 000000'
+
+bindsym $mod+l exec "swaylock -f -c 000000; sleep 300; pkill -USR1 swayidle"
 
 # start a terminal
 bindsym $mod+Return exec $term
@@ -136,8 +138,13 @@ bindsym $mod+Print exec grim -g \"$(slurp)" ~/pictures/screenshots/$(date +"%Y%m
 bindsym $mod+Shift+Print exec grim -g \"$(slurp)" - | wl-copy
 
 # dismiss notifications
-bindsym $mod+n exec makoctl dismiss
-bindsym $mod+Shift+n exec makoctl dismiss -a
+bindsym $mod+n exec swaync-client --close-latest
+bindsym $mod+Shift+n exec swaync-client --close-all
+# open notification sidebar
+bindsym $mod+Ctrl+n exec swaync-client -t
+
+#toggle bluelight mode
+bindsym $mod+b exec ~/.bin/bluelight_mode.sh
 
 # special key bindings
 bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
@@ -152,33 +159,8 @@ default_border pixel 1
 # autostart udiskie
 exec udiskie &
 
-# media player
-
-# bg daemon
-exec_always "killall swww-daemon; swww-daemon --format xrgb & sleep 0.7 && swww img ~/.config/sway/assets/3.jpg"
-
-bar {
-    position top
-    status_command ~/.bin/status_bar
-
-    pango_markup enabled
-    font pango: Inter, Font Awesome 6 Free 11
-
-    colors {
-        # Black with transparency (99 at the end)
-        background #000000B3
-        separator  #00000000
-        statusline #ffffff
-
-        # State             Border     BG          Text
-        focused_workspace   #ffffff    #000000BF   #ffffff
-        active_workspace    #000000BF  #000000BF   #ffffff
-        inactive_workspace  #000000BF  #000000BF   #808080
-        urgent_workspace    #000000BF  #000000BF   #000000
-    }
-
-    tray_output none
-}
+#ensure bg daemon doesnt break. TODO: bg does not reappear after sleeping
+exec_always "pkill waybar; waybar & sleep 0.5 && bash ~/.bin/bg-init.sh"
 
 include /etc/sway/config.d/*
 include ~/.config/sway/config.d/*

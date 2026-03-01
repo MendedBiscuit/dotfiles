@@ -16,14 +16,14 @@ set $files dolphin
 include ~/.config/sway/colorscheme
 
 # idle management
+
 exec swayidle -w \
          timeout 600 'swaylock -f -c 000000' \
-         timeout 605 'swaymsg "output * dpms off"' \
+         timeout 605 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
          timeout 610 'systemctl suspend' \
-         resume 'swaymsg "output * dpms on"' \
          before-sleep 'swaylock -f -c 000000'
 
-bindsym $mod+l exec "swaylock -f -c 000000; sleep 300; pkill -USR1 swayidle"
+bindsym $mod+l exec swaylock -f -c 000000
 
 # start a terminal
 bindsym $mod+Return exec $term
@@ -151,10 +151,14 @@ bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
 bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
 bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
 bindsym XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
-
+bindsym XF86MonBrightnessUp exec brightnessctl set +5%
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
 # appearance
 smart_borders on
 default_border pixel 1
+
+# steam res fix
+
 
 # autostart udiskie
 exec udiskie &

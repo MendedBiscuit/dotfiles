@@ -19,35 +19,35 @@ elif [ "$1" == "relax" ]; then
     NUM2=$(( ( RANDOM % 10 )  + 5 ))
     RESULT=$(( NUM1 * NUM2 ))
     
-    echo "--- UNLOCK SEQUENCE INITIATED ---"
+    echo "--- UNLOCK ---"
     echo "Solve this to proceed: $NUM1 * $NUM2"
     read -p "Answer: " answer
 
     if [ "$answer" != "$RESULT" ]; then
-        echo "Wrong. Focus on your work."
+        echo "Err"
         exit 1
     fi
 
-    SENTENCE="I am choosing to sacrifice my deep work for cheap dopamine."
-    echo -e "\nType the following exactly:"
+    SENTENCE=""
+    echo -e "\nType the following:"
     echo "$SENTENCE"
-    read -p "> " input
+    read -p "> I write this sitting in the kitchen sink." input
 
     if [ "$input" != "$SENTENCE" ]; then
-        echo "Typo detected. Access denied."
+        echo "Err"
         exit 1
     fi
 
     echo -e "\n Cooldown..."
     for i in {180..1}; do
-        printf "\rSeconds remaining: %d " $i
+        printf "%d " $i
         sleep 1
     done
     echo -e "\n"
 
     sudo cp /etc/hosts.open /etc/hosts
     send_notification "Focus Mode: OFF" "Distractions unblocked."
-    echo "Relax mode enabled. Use it wisely."
+    echo "off"
 
 else
     echo "Usage: work | relax"

@@ -28,10 +28,10 @@ elif [ "$1" == "relax" ]; then
         exit 1
     fi
 
-    SENTENCE=""
+    SENTENCE="I write this sitting in the kitchen sink."
     echo -e "\nType the following:"
     echo "$SENTENCE"
-    read -p "> I write this sitting in the kitchen sink." input
+    read -p "> " input
 
     if [ "$input" != "$SENTENCE" ]; then
         echo "Err"
@@ -40,7 +40,7 @@ elif [ "$1" == "relax" ]; then
 
     echo -e "\n Cooldown..."
     for i in {180..1}; do
-        printf "%d " $i
+        printf  "%d " $i
         sleep 1
     done
     echo -e "\n"

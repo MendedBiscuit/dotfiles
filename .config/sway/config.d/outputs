@@ -22,3 +22,15 @@ output HDMI-A-1 {
     scale 1.4
     pos 0 0
 }
+
+output DP-8 {
+    mode 3440x1920
+    scale 1.4
+    pos 0 0
+}
+
+output DP-9 {
+    mode 3440x1920
+    scale 1.4
+    pos 0 0
+}

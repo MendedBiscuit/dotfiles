@@ -22,7 +22,7 @@
 
     "mpris": {
         "format": "<span color='#ffffff'>{status_icon}</span> <span color='#808080'>{artist} - {title}</span>",
-        "format-paused": "<span color='#ffffff'>{status_icon}</span> <span color='#808080'>{artist} - {title}</span>",
+        "format-paused": "<span color='#ffffff'>{status_icon}</span> <span color='#808080'>{title} - {artist}</span>",
         "player-icons": {
             "default": "󰐊",
             "paused": "󰏤"
@@ -31,7 +31,7 @@
             "paused": "󰏤",
             "playing": "󰐊"
         },
-        "max-length": 40,
+        "max-length": 100,
         "on-click-middle": "playerctl play-pause",
         "on-click-right": "playerctl next"
     },
@@ -48,7 +48,7 @@
 
     "custom/network": {
         "exec": "nmcli -t -f active,ssid dev wifi | grep '^yes' | cut -d: -f2",
-        "format": "<span color='#ffffff'>  </span> <span color='#808080'>{}</span> <span color='#333333'></span>",
+        "format": "<span color='#ffffff'>   </span> <span color='#808080'>{}</span> <span color='#333333'></span>",
         "interval": 10
     },
 

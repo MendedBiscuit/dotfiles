@@ -65,7 +65,7 @@
     },
 
     "custom/clock": {
-        "exec": "date +'%H:%M | %m-%d'",
+        "exec": "date +'%H:%M | %m-%d '",
         "format": "<span color='#ffffff'><b>{}</b></span>",
         "interval": 60
     },
